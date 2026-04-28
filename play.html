@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游戏游玩 - AI故事工坊</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-indigo-50 to-purple-50 min-h-screen">
+    <div class="max-w-3xl mx-auto px-4 py-12">
+        <div class="bg-white rounded-xl shadow-lg p-8">
+            <h1 id="storyTitle" class="text-3xl font-bold text-center text-gray-900 mb-8">我的故事</h1>
+            
+            <div id="storyContent" class="text-lg text-gray-700 leading-relaxed mb-8 min-h-40">
+                请导入你的故事文件开始游玩
+            </div>
+            
+            <div id="optionsContainer" class="space-y-4 mb-8">
+                <!-- 选项按钮将在这里动态生成 -->
+            </div>
+            
+            <div class="flex justify-between">
+                <button onclick="loadStory()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                    导入故事
+                </button>
+                <button onclick="restartStory()" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                    重新开始
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="fileInput" accept=".json" class="hidden">
+
+    <script src="js/main.js"></script>
+    <script src="js/play.js"></script>
+</body>
+</html>

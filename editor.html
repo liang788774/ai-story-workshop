@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>剧情编辑器 - AI故事工坊</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        .node {
+            position: absolute;
+            width: 200px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: move;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .node.selected {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+        .connection {
+            stroke: #94a3b8;
+            stroke-width: 2;
+            fill: none;
+            pointer-events: stroke;
+        }
+        .connection:hover {
+            stroke: #8b5cf6;
+            stroke-width: 3;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- 顶部工具栏 -->
+    <div class="bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center space-x-4">
+            <button onclick="addNode()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                + 添加剧情节点
+            </button>
+            <button onclick="exportStory()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                导出故事
+            </button>
+            <button onclick="importStory()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                导入故事
+            </button>
+        </div>
+        <div>
+            <button onclick="previewStory()" class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700">
+                预览故事
+            </button>
+        </div>
+    </div>
+
+    <!-- AI辅助创作面板 -->
+    <div class="fixed right-4 top-20 w-80 bg-white rounded-lg shadow-lg p-4 z-40">
+        <h3 class="text-lg font-bold text-gray-900 mb-4">🤖 AI创作助手</h3>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">输入你的想法</label>
+            <textarea id="aiPrompt" class="w-full border border-gray-300 rounded-lg p-2 h-24" placeholder="例如：帮我写一个校园寻宝的故事开头"></textarea>
+        </div>
+        <button onclick="aiGenerate()" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 mb-4">
+            AI生成剧情
+        </button>
+        <div id="aiResult" class="bg-gray-50 rounded-lg p-3 text-sm text-gray-700 min-h-24">
+            AI生成的内容将显示在这里
+        </div>
+    </div>
+
+    <!-- 编辑画布 -->
+    <div id="canvas" class="relative w-full h-[calc(100vh-80px)] overflow-auto">
+        <svg id="connections" class="absolute top-0 left-0 w-full h-full pointer-events-none"></svg>
+    </div>
+
+    <!-- 节点编辑弹窗 -->
+    <div id="nodeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 w-96">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">编辑剧情节点</h3>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">节点标题</label>
+                <input type="text" id="nodeTitle" class="w-full border border-gray-300 rounded-lg p-2">
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">剧情内容</label>
+                <textarea id="nodeContent" class="w-full border border-gray-300 rounded-lg p-2 h-32"></textarea>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">选项（每行一个）</label>
+                <textarea id="nodeOptions" class="w-full border border-gray-300 rounded-lg p-2 h-24" placeholder="选项1&#10;选项2"></textarea>
+            </div>
+            <div class="flex justify-end space-x-4">
+                <button onclick="closeNodeModal()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">
+                    取消
+                </button>
+                <button onclick="saveNode()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="fileInput" accept=".json" class="hidden">
+
+    <script src="js/main.js"></script>
+    <script src="js/editor.js"></script>
+</body>
+</html>
