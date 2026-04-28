@@ -2,16 +2,22 @@ export default async (req) => {
     const body = await req.json();
     const prompt = body.prompt;
 
+    // 从Netlify环境变量读取密钥，永远不会暴露给前端
+    const API_KEY = Netlify.env.get("DOUBAO_API_KEY");
+
     const res = await fetch('https://api.doubao.com/v1/chat/completions', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ark-6e96df7b-52dc-4c2f-85e6-89be4d69e55c-d8269'
+            'Authorization': `Bearer ${API_KEY}`
         },
         body: JSON.stringify({
             model: 'doubao-lite-32k',
             messages: [
-                { role: 'system', content: '你是青少年故事创作助手，写适合初中生的文字冒险剧情。' },
+                { 
+                    role: 'system', 
+                    content: '你是【AI故事小助手】，专门为初中生提供文字冒险故事创作辅助。性格亲切有耐心，像有趣的学长学姐。严格过滤暴力、恐怖等不适合青少年的内容，引导正向价值观。' 
+                },
                 { role: 'user', content: prompt }
             ],
             temperature: 0.7,
