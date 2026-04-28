@@ -42,7 +42,7 @@ export default async (req) => {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 15000); // 15秒超时
 
-    const res = await fetch('https://api.doubao.com/v1/chat/completions', {
+    const res = await fetch('https://ark.cn-beijing.volces.com/api/v3/chat/completionss', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
